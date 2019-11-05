@@ -149,8 +149,12 @@ class Two_Factor_Email extends Two_Factor_Provider {
 
 		/* translators: %s: site name */
 		$subject = wp_strip_all_tags( sprintf( __( 'Your login confirmation code for %s', 'two-factor' ), get_bloginfo( 'name' ) ) );
+		/* Developer can update subject */
+		$subject = apply_filter('email_token_subject', $subject, $user);
 		/* translators: %s: token */
 		$message = wp_strip_all_tags( sprintf( __( 'Enter %s to log in.', 'two-factor' ), $token ) );
+		/* Developer can update message */
+		$message = apply_filter('email_token_message', $message, $user, $token);
 
 		return wp_mail( $user->user_email, $subject, $message );
 	}
